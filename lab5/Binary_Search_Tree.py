@@ -75,18 +75,6 @@ class BinarySearchTree:
         rightHeight = self.height_recursive(node.right)
         return max(leftHeight, rightHeight) + 1
 
-    def find_min(self, node):
-        while node.left != None:
-            node = node.left
-
-        return node
-
-    def find_max(self, node):
-        while node.right != None:
-            node = node.right
-
-        return node
-
     def min_walk(self):
         self.walk_recursive(self.root)
         print()
@@ -146,40 +134,40 @@ class BinarySearchTree:
             self.__print_tree(node.left, lvl+5)
 
 def main():
-    aha = BinarySearchTree(root=Node(50, "A", None, None))
-    aha.insert(15, "B")
-    aha.insert(62, "C")
-    aha.insert(5, "D")
-    aha.insert(20, "E")
-    aha.insert(58, "F")
-    aha.insert(91, "G")
-    aha.insert(3, "H")
-    aha.insert(8, "I")
-    aha.insert(37, "J")
-    aha.insert(60, "K")
-    aha.insert(24, "L")
+    tree = BinarySearchTree(root=Node(50, "A", None, None))
+    tree.insert(15, "B")
+    tree.insert(62, "C")
+    tree.insert(5, "D")
+    tree.insert(20, "E")
+    tree.insert(58, "F")
+    tree.insert(91, "G")
+    tree.insert(3, "H")
+    tree.insert(8, "I")
+    tree.insert(37, "J")
+    tree.insert(60, "K")
+    tree.insert(24, "L")
 
-    aha.print_tree()
-    aha.min_walk()
+    tree.print_tree()
+    tree.min_walk()
 
     data_if_not_null = lambda x: x.data if x != None else ""
 
-    print(data_if_not_null(aha.search(24)))
-    aha.insert(20, "AA")
-    aha.insert(6, "M")
-    aha.delete(62)
-    aha.insert(59, "N")
-    aha.insert(100, "P")
-    aha.delete(8)
-    aha.delete(15)
-    aha.insert(55, "R")
-    aha.delete(50)
-    aha.delete(5)
-    aha.delete(24)
-    print(aha.height())
-    aha.min_walk()
+    print(data_if_not_null(tree.search(24)))
+    tree.insert(20, "AA")
+    tree.insert(6, "M")
+    tree.delete(62)
+    tree.insert(59, "N")
+    tree.insert(100, "P")
+    tree.delete(8)
+    tree.delete(15)
+    tree.insert(55, "R")
+    tree.delete(50)
+    tree.delete(5)
+    tree.delete(24)
+    print(tree.height())
+    tree.min_walk()
 
-    aha.print_tree()
+    tree.print_tree()
 
                 
 if __name__ == "__main__":
