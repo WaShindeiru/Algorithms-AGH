@@ -143,5 +143,15 @@ def main3():
 
     print(table)
 
+def test():
+    table = HashTable(13)
+    table.insert(5, "aha")
+    table.insert(18, "super")
+    print(table)
+
+    table.remove(5)
+    print(table)
+    print(table.search(18))
+
 if __name__ == "__main__":
-    main3()
+    test()
