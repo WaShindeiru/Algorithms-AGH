@@ -49,11 +49,11 @@ class AdjListGraph(Graph):
 
         for index, value in enumerate(self.adjList[index1]):
             if value == index2:
-                self.adjList.pop(index)
+                self.adjList[index1].pop(index)
 
         for index, value in enumerate(self.adjList[index2]):
             if value == index1:
-                self.adjList.pop(index)
+                self.adjList[index2].pop(index)
 
         self.size -= 1
 
@@ -210,9 +210,10 @@ class AdjMatrixGraph(Graph):
 
 
 def main():
+    # test dla grafu z wykorzystaniem macierzy sąsiedztwa
     vertices = set([number for sublist in polska.graf for number in sublist])
 
-    graph = AdjListGraph()
+    graph = AdjMatrixGraph()
     for key in vertices:
         graph.insertVertex(Vertex(key))
 
@@ -226,6 +227,7 @@ def main():
 
 
 def main2():
+    # test dla grafu z wykorzystaniem listy sąsiedztwa
     vertices = set([number for sublist in polska.graf for number in sublist])
 
     graph = AdjListGraph()
