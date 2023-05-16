@@ -9,6 +9,14 @@ class Vertex:
     def __hash__(self):
         return hash(self.key)
 
+class Edge:
+    def __init__(self, vertex1, vertex2, weight):
+        self.vertex1 = vertex1
+        self.vertex2 = vertex2
+        self.weight = weight
+
+    def __repr__(self):
+        return str(weight)    
 
 class Graph:
     def __init__(self):
@@ -95,6 +103,8 @@ class AdjListGraph(Graph):
         self.vertexDictionary[vertex] = index
         self.order += 1
 
+        return vertex
+
     def insertEdge(self, vertex1, vertex2, edge):
         index1 = self.getVertexIdx(vertex1)
         index2 = self.getVertexIdx(vertex2)
@@ -102,14 +112,20 @@ class AdjListGraph(Graph):
         if vertex2 not in self.adjList[index1]:
             self.size += 1
 
-        self.adjList[index1][vertex2] = edge
-        self.adjList[index2][vertex1] = edge
+        self.adjList[index1][vertex2] = Edge(vertex1, vertex2, edge)
+        self.adjList[index2][vertex1] = Edge(vertex2, vertex1, edge)
 
     def neighboursIdx(self, vertex_idx):
-        return list(self.adjList[vertex_idx].keys)
+        return list(self.adjList[vertex_idx].keys())
 
     def neighbours(self, vertex):
-        return list(self.adjList[vertex].values)
+        return list(self.adjList[self.getVertexIdx(vertex)].keys())
+
+    def neighbourEdgesIdx(self, idx):
+        return list(self.adjList[idx].values())
+
+    def neighbourEdges(self, vertex):
+        return list(self.adjList[self.getVertexIdx(vertex)].values())
 
     def edges(self):
         edges = set()
@@ -217,17 +233,27 @@ class AdjMatrixGraph(Graph):
 
 def main():
     graph = AdjListGraph()
-    tree = AdjListGraph()
+    
+    a1 = graph.insertVertex(Vertex("aha"))
+    a2 = graph.insertVertex(Vertex("kurwa"))
+    a3 = graph.insertVertex(Vertex("Deszcz"))
+
+    graph.insertEdge(a1, a2, 2)
+    graph.insertEdge(a1, a3, 2)
+
+    neighbours = graph.neighboursIdx(graph.getVertexIdx(a1))
+
+    print([graph.getVertexIdx(i) for i in graph.neighboursIdx(graph.getVertexIdx(a1))])
 
 
 if __name__ == "__main__":
     main()
 
-def PrimAlgorithm():
-    graph = AdjListGraph()
-    tree = AdjListGraph()
+# def PrimAlgorithm():
+#     graph = AdjListGraph()
+#     tree = AdjListGraph()
 
-    while(graph.size != tree.size()):
-        new = graph.getVertex(0)
+#     while(graph.size != tree.size()):
+#         new = graph.getVertex(0)
 
-        neighbours = graph.neighbours(self.getVertex(0))
+#         neighbours = graph.neighbours(self.getVertex(0))
