@@ -9,6 +9,9 @@ class Vertex:
     def __hash__(self):
         return hash(self.key)
 
+    def __repr__(self):
+        return str(self.key)
+
 class Edge:
     def __init__(self, vertex1, vertex2, weight):
         self.vertex1 = vertex1
@@ -16,18 +19,21 @@ class Edge:
         self.weight = weight
 
     def __repr__(self):
-        return str(weight)    
+        return str(self.weight)
+
+    def __eq__(self, other):
+        return self.key == other.key and self.vertex1 == other.vertex1 and self.vertex2 == other.vertex2    
 
 class Graph:
     def __init__(self):
         self.vertexTable = list()
         self.vertexDictionary = dict()
-        self.size = 0
-        self.order = 0
+        self._size = 0
+        self._order = 0
         self.freeIndices = list()
 
     def isEmpty(self):
-        return self.size == 0
+        return self._size == 0
 
     def getVertexIdx(self, vertex):
         return self.vertexDictionary.get(vertex, None)
@@ -36,10 +42,10 @@ class Graph:
         return self.vertexTable[index]
 
     def order(self):
-        return self.order
+        return self._order
 
     def size(self):
-        return self.size
+        return self._size
 
     def setBrightness(self, vertex, brightness):
         self.vertexTable[vertex].brightness = brightness
@@ -68,7 +74,7 @@ class AdjListGraph(Graph):
         del self.adjList[index1][vertex2]
         del self.adjList[index2][vertex1]
 
-        self.size -= 1
+        self._size -= 1
 
     def deleteVertex(self, vertex):
         index = self.getVertexIdx(vertex)
@@ -85,7 +91,7 @@ class AdjListGraph(Graph):
 
         self.freeIndices.append(index)
 
-        self.order -= 1
+        self._order -= 1
 
     def insertVertex(self, vertex):
         if vertex in self.vertexDictionary:
@@ -101,7 +107,7 @@ class AdjListGraph(Graph):
             self.adjList.append(dict())
 
         self.vertexDictionary[vertex] = index
-        self.order += 1
+        self._order += 1
 
         return vertex
 
@@ -110,16 +116,16 @@ class AdjListGraph(Graph):
         index2 = self.getVertexIdx(vertex2)
         
         if vertex2 not in self.adjList[index1]:
-            self.size += 1
+            self._size += 1
 
         self.adjList[index1][vertex2] = Edge(vertex1, vertex2, edge)
         self.adjList[index2][vertex1] = Edge(vertex2, vertex1, edge)
 
-    def neighboursIdx(self, vertex_idx):
-        return list(self.adjList[vertex_idx].keys())
+    def neighbours(self, vertex_idx):
+        return [(x, self.adjList[vertex_idx][x]) for x in self.adjList[vertex_idx]]
 
-    def neighbours(self, vertex):
-        return list(self.adjList[self.getVertexIdx(vertex)].keys())
+    # def neighboursIdx(self, vertex):
+    #     return list(self.adjList[self.getVertexIdx(vertex)].keys())
 
     def neighbourEdgesIdx(self, idx):
         return list(self.adjList[idx].values())
@@ -137,6 +143,9 @@ class AdjListGraph(Graph):
                 edges.add((self.getVertex(i).key, y.key))
 
         return list(edges)
+
+    def vertices(self):
+        return list(self.vertexDictionary.keys())
 
 class AdjMatrixGraph(Graph):
     def __init__(self):
@@ -158,15 +167,15 @@ class AdjMatrixGraph(Graph):
                 self.adjMatrix[x][index] = 0
                 self.adjMatrix[index][x] = 0
 
-            self.order += 1
+            self._order += 1
 
         else:
             index = Graph.order(self)
-            self.order += 1
+            self._order += 1
             self.vertexTable.append(vertex)
             self.vertexDictionary[vertex] = index
-            self.adjMatrix.append([0 for x in range(self.order)])
-            for x in range(self.order):
+            self.adjMatrix.append([0 for x in range(self._order)])
+            for x in range(self._order):
                 if x != index:
                     self.adjMatrix[x].append(0)
 
@@ -181,7 +190,7 @@ class AdjMatrixGraph(Graph):
         self.adjMatrix[index1][index2] = 1
         self.adjMatrix[index2][index1] = 1
 
-        self.size += 1
+        self._size += 1
 
     def neighboursIdx(self, vertex_idx):
         temp = list()
@@ -204,7 +213,7 @@ class AdjMatrixGraph(Graph):
         if self.adjMatrix[index1][index2] == 1:
             self.adjMatrix[index1][index2] = 0
             self.adjMatrix[index2][index1] = 0
-            self.size -= 1
+            self._size -= 1
 
     def deleteVertex(self, vertex):
         index = self.getVertexIdx(vertex)
@@ -218,7 +227,7 @@ class AdjMatrixGraph(Graph):
         for i in self.vertexDictionary.values():
             self.adjMatrix[i][index] = None
 
-        self.order -= 1
+        self._order -= 1
         self.freeIndices.append(index)
 
     def edges(self):
@@ -246,14 +255,18 @@ def main():
     print([graph.getVertexIdx(i) for i in graph.neighboursIdx(graph.getVertexIdx(a1))])
 
 
-if __name__ == "__main__":
-    main()
 
-# def PrimAlgorithm():
-#     graph = AdjListGraph()
-#     tree = AdjListGraph()
+def main2():
 
-#     while(graph.size != tree.size()):
-#         new = graph.getVertex(0)
-
-#         neighbours = graph.neighbours(self.getVertex(0))
+    graf = [ ('A','B',4), ('A','C',1), ('A','D',4),
+         ('B','E',9), ('B','F',9), ('B','G',7), ('B','C',5),
+         ('C','G',9), ('C','D',3),
+         ('D', 'G', 10), ('D', 'J', 18),
+         ('E', 'I', 6), ('E', 'H', 4), ('E', 'F', 2),
+         ('F', 'H', 2), ('F', 'G', 8),
+         ('G', 'H', 9), ('G', 'J', 8),
+         ('H', 'I', 3), ('H','J',9),
+         ('I', 'J', 9)
+        ]
+    
+    ExampleGraph = AdjListGraph()
