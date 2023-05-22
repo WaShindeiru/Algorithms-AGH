@@ -1,4 +1,5 @@
 from InsertionSort import InsertionSort
+from HeapSort import PriorityQueue
 import random
 import time
 
@@ -58,9 +59,9 @@ def main():
     print()
 
     data2 = list()
-    for i in range(100):
+    for i in range(10000):
         temp = int(random.random() * 100)
-        data2.append(Node(temp, temp)) 
+        data2.append(temp) 
 
     t_start_Shell = time.perf_counter()
 
@@ -74,25 +75,22 @@ def main():
     t_stop_Insertion = time.perf_counter()
     time_Insertion = t_stop_Insertion - t_start_Insertion
 
-    # t_start_heap = time.perf_counter()
+    t_start_heap = time.perf_counter()
 
-    # queue2 = PriorityQueue(data2)
-    # Random_Heap = queue2.heapSort()
+    queue2 = PriorityQueue(data2)
+    Random_Heap = queue2.heapSort()
 
-    # t_stop_heap = time.perf_counter()
-    # heap_time = t_stop_heap - t_start_heap
+    t_stop_heap = time.perf_counter()
+    heap_time = t_stop_heap - t_start_heap
 
     print("Algorytm Shella: ")
-    print("Tablica: {}".format(Random_Shell))
     print("Czas: {}".format(time_Shell))
 
     print("Sortowanie przez wstawianie: ")
-    print("Tablica: {}".format(Random_Insertion))
     print("Czas: {}".format(time_Insertion))
 
-    # print("Sortowanie kopcowe")
-    # print("Tablica: {}".format(Random_Heap))
-    # print("Czas: {}".format(heap_time))
+    print("Sortowanie kopcowe")
+    print("Czas: {}".format(heap_time))
 
 if __name__ == "__main__":
     main()
