@@ -36,10 +36,18 @@ class Graph:
         return self.size
 
 class AdjMatrixGraph(Graph):
-    def __init__(self):
+    def __init__(self, graph=None):
+        super().__init__()
         self.adjMatrix = list()
         self.realSize = 0
-        super().__init__()
+        
+        if(graph):
+            for edge in graph:
+                vertex1 = Vertex(edge[0])
+                vertex2 = Vertex(edge[1])
+                self.insertVertex(vertex1)
+                self.insertVertex(vertex2)
+                self.insertEdge(vertex1, vertex2, edge[2])
 
     def insertVertex(self, vertex):
         if self.getVertexIdx(vertex) is not None:
@@ -131,19 +139,17 @@ class AdjMatrixGraph(Graph):
         return np.array(self.adjMatrix)
 
 
-def main():
-    temp = AdjMatrixGraph()
-    vertex1 = Vertex("A")
-    vertex2 = Vertex("B")
-    vertex3 = Vertex("C")
-
-    temp.insertVertex(vertex1)
-    temp.insertVertex(vertex2)
-    temp.insertVertex(vertex3)
-
-    temp.insertEdge(vertex1, vertex2, 1)
-    temp.insertEdge(vertex2, vertex3, 1)
-
-    print(temp.toNumpyArray())
-
-main()
+# def main():
+#     temp = AdjMatrixGraph()
+#     vertex1 = Vertex("A")
+#     vertex2 = Vertex("B")
+#     vertex3 = Vertex("C")
+#
+#     temp.insertVertex(vertex1)
+#     temp.insertVertex(vertex2)
+#     temp.insertVertex(vertex3)
+#
+#     temp.insertEdge(vertex1, vertex2, 1)
+#     temp.insertEdge(vertex2, vertex3, 1)
+#
+#     print(temp.toNumpyArray())
